@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+<!-- <h1>{{request.user.username}}</h1>
+<h1>{{request.user.password}}</h1>
+<h1>{{request.user.first_name}}</h1> -->
+
+<div class="card">
+   
+    <div class="message">
+    <h1>Messages</h1>
+    </div>
+    <a href="{% url 'logout' %}">
+        logout
+    </a>
+</div>
+{% endblock content %}

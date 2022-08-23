@@ -30,9 +30,20 @@ body{
     color: white;
     border-radius: 3px; 
 }
+form{
+    margin-top: 20px;
+}
+.invisible{
+    visibility:hidden;
+}
 .bold{
     font-weight: bold;
 }
 p{
     margin-top: 0;
+}
+
+.off{
+    display: none;
+    /* visibility: collapse; */
 }

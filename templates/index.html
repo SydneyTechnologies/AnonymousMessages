@@ -11,19 +11,34 @@
         Get feedback from your friends and family see how they feel about you.
         
     </div>
-    <div style="margin-top: 10px;">
-        <form action="" method="post">
+    <div style="margin-top: 10px;" id="create">
+        <form action="{% url 'create-user' %}" method="post">
             {% csrf_token %}
             <label for="" class="bold">Enter your name</label>
             <br>
-            <input type="text" name="" id="" class="field">
+            {{create_form.name}}
             <br>
             <button  class="field bold" id="main-button">
                 Create your link
                 <i class="fa fa-rocket"></i>
             </button>
         </form>
+        <button  class="field bold" onclick="login()">
+            Or Login
+        </button>
     </div>
-
+    <div id="login" class="off">
+        <form action="">
+            {% csrf_token %}
+            <label for="" class="bold">Enter your username</label>
+            {{login_form.username}}
+            <label for="" class="bold">Password</label>
+            {{login_form.password}}
+            <input type="submit" value="Login" class="field bold" id="main-button">
+        </form>
+        <button  class="field bold" onclick="login()">
+            Back
+        </button>
+    </div>
 </div>
 {% endblock content %}
