@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="card">
-    <p>This is a private message</p>
-    <p>Get feedback from your friends and family see how they feel about you</p>
-    <p>It's Anonymous you can't know who sent a message so just have fun</p>
+    <strong>
+        <p>Welcome to Anonymous Messages</p>
+    </strong>
+    <div> 
+        <p>
+            It's Anonymous you can't know who sent a message so just have fun
+        </p>
+        Get feedback from your friends and family see how they feel about you.
+        
+    </div>
+    <div style="margin-top: 10px;">
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="" class="bold">Enter your name</label>
+            <br>
+            <input type="text" name="" id="" class="field">
+            <br>
+            <button  class="field bold" id="main-button">
+                Create your link
+                <i class="fa fa-rocket"></i>
+            </button>
+        </form>
+    </div>
+
 </div>
 {% endblock content %}
