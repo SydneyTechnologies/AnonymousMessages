@@ -2,8 +2,8 @@ from django.db import models
 from django.contrib.auth import get_user_model
 
 # Create your models here.
-class Message(models.model):
-    target = models.ForeignKey(get_user_model())
+class Message(models.Model):
+    target = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
     message = models.TextField()
     @property
     def get_title(self):

@@ -1,4 +1,6 @@
 from django import forms
+from django.forms import ModelForm
+from .models import Message
 
 
 class UserForm(forms.Form):
@@ -15,3 +17,8 @@ class LoginUserForm(forms.Form):
         super().__init__(*args, **kwargs)
         self.fields['username'].widget.attrs['class'] = 'field'
         self.fields['password'].widget.attrs['class'] = 'field'
+
+class MessageForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = "__all__"

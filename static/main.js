@@ -9,7 +9,14 @@ function login(){
         login_div.classList.add("off")
         create_div.classList.remove("off")
     }
-   
-
-   
 }
+
+function copyToClip() {
+    var copyText = document.getElementById("inbox");
+    copyText.select();
+    copyText.setSelectionRange(0, 99999); 
+    navigator.clipboard.writeText(copyText.value);
+  
+    /* Alert the copied text */
+    alert("Copied the text: " + copyText.value);
+  } 

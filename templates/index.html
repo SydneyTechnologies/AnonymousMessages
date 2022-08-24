@@ -23,20 +23,20 @@
                 <i class="fa fa-rocket"></i>
             </button>
         </form>
-        <button  class="field bold" onclick="login()">
+        <button  class="field bold sub-button" onclick="login()">
             Or Login
         </button>
     </div>
     <div id="login" class="off">
-        <form action="">
+        <form action="{% url 'login' %}" method="post">
             {% csrf_token %}
-            <label for="" class="bold">Enter your username</label>
+            <label for="}" class="bold">Enter your username</label>
             {{login_form.username}}
             <label for="" class="bold">Password</label>
             {{login_form.password}}
             <input type="submit" value="Login" class="field bold" id="main-button">
         </form>
-        <button  class="field bold" onclick="login()">
+        <button  class="field bold sub-button" onclick="login()">
             Back
         </button>
     </div>

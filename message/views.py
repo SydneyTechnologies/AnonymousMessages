@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
+from django.urls import reverse
 from django.views.generic import TemplateView
-from . forms import UserForm, LoginUserForm
+from . forms import UserForm, LoginUserForm, MessageForm
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from .utils import generate_pass, generate_username
@@ -27,13 +28,41 @@ def create_user(request):
             first_name = form.cleaned_data['name']
             username = generate_username()
             password = generate_pass()
-            user = User.objects.create(first_name = first_name, username=username, password=password)
+            user = User.objects.create_user(first_name = first_name, username=username, password=password)
             login(request, user)
-            return redirect("view-messages")
+            return redirect("view-messages", password)
+
+def login_user(request):
+    if request.method == "POST":
+        login_form = LoginUserForm(request.POST)
+        if login_form.is_valid():
+            username = login_form.cleaned_data["username"]
+            password = login_form.cleaned_data["password"]
+            user = authenticate(username=username, password=password)
+            print(user)
+            if user is not None:
+                login(request, user=user)
+                return redirect("view-messages", password)
+            else:
+                return HttpResponse("not working")
 
 
-def view_messages(request):
-    return render(request, "messages.html")
+def view_messages(request, unsafe_pass):
+    inbox_location = request.build_absolute_uri(reverse("create-message",  args=[request.user.username]))
+    context = {"inbox": inbox_location, "unsafe": unsafe_pass}
+    return render(request, "messages.html", context)
+
+
+def create_message(request, username):
+    target_user = User.objects.get(username = username)
+    message_form = MessageForm()
+    context = {"target": target_user, "form": message_form}
+
+    if target_user is not None:
+        return render(request, "send-message.html", context)
+    else:
+        return HttpResponse("Target User not found")
+
 
 def logout_view(request):
     # request.user.delete()

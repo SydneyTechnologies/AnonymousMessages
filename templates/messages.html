@@ -3,13 +3,47 @@
 <!-- <h1>{{request.user.username}}</h1>
 <h1>{{request.user.password}}</h1>
 <h1>{{request.user.first_name}}</h1> -->
+<div class="card ">
+        <div class="info-box">
+            <span>
+                <strong>Username:  </strong>{{request.user.username}}
+            </span>
+            <span>
+                <strong>Password:  </strong>{{unsafe}}
+            </span>
+        </div>
+
+    <!-- <h3>Please Keep details somewhere safe</h3> -->
+    <p>You need these details to login from anywhere! PIN cannot be restored!</p>
+    <input type="text" value="{{inbox}}" class="field" id="inbox" onclick="copyToClip()">
+    <button class=" field bold" id="main-button" onclick="copyToClip()">
+        Copy
+    </button>
+</div>
+
+<!-- <div class="view">
+    <button class=" field bold sub-button">
+        View
+    </button>
+</div> -->
+
 
 <div class="card">
     <h2>Messages</h2>
+    {% for message in messages %}
     <div class="message">
+        <div class="ender"><i class="fa fa-trash" aria-hidden="true"></i>
+        </div>
     </div>
-    <a href="{% url 'logout' %}">
-        logout
-    </a>
+    {% empty %}
+    <div class="message">
+        Sorry you do not have any messages at this time
+        <br>
+    </div>
+    {% endfor %}
+    <form action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button class="field bold sub-button">Logout</button>
+    </form>
 </div>
 {% endblock content %}
