@@ -60,6 +60,7 @@ p{
     margin: 10px auto;
     border-radius: 3px;
     border: solid 2px #292F36;
+    min-width: 90%;
 }
 .info-box{
     display: flex;

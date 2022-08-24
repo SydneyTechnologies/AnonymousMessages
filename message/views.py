@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect, HttpResponse
 from django.urls import reverse
 from django.views.generic import TemplateView
 from . forms import UserForm, LoginUserForm, MessageForm
+from . models import Message
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from .utils import generate_pass, generate_username
@@ -13,7 +14,7 @@ from .utils import generate_pass, generate_username
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect("view-messages", None)
+        return redirect("view-messages", request.session["unsafe_pass"])
     user_form = UserForm()
     login_form = LoginUserForm()
     context = {"create_form": user_form, "login_form": login_form}
@@ -41,15 +42,17 @@ def login_user(request):
             user = authenticate(username=username, password=password)
             print(user)
             if user is not None:
+                request.session["unsafe_pass"] = password
                 login(request, user=user)
-                return redirect("view-messages", password)
+                return redirect("view-messages", request.session["unsafe_pass"])
             else:
                 return HttpResponse("not working")
 
 
 def view_messages(request, unsafe_pass=None):
     inbox_location = request.build_absolute_uri(reverse("create-message",  args=[request.user.username]))
-    context = {"inbox": inbox_location, "unsafe": unsafe_pass}
+    messages = request.user.message_set.all()
+    context = {"inbox": inbox_location, "unsafe": unsafe_pass, "messages": messages}
     return render(request, "messages.html", context)
 
 
@@ -71,6 +74,11 @@ def create_message(request, username):
             return redirect("index")
         else:
             print(message_form.errors)
+
+def delete_message(request, pk):
+    message = Message.objects.get(pk = pk)
+    message.delete()
+    return redirect("view-messages", request.session["unsafe_pass"])
 
 
 

@@ -32,6 +32,9 @@
     <h2>Messages</h2>
     {% for message in messages %}
     <div class="message">
+        <div>
+            {{message.message}}
+        </div>
         <div class="ender"><i class="fa fa-trash" aria-hidden="true"></i>
         </div>
     </div>
