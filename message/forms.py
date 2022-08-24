@@ -21,4 +21,9 @@ class LoginUserForm(forms.Form):
 class MessageForm(ModelForm):
     class Meta:
         model = Message
-        fields = "__all__"
+        fields = ["message"]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["message"].widget.attrs["class"] = "text-space"
+        self.fields["message"].widget.attrs["placeholder"] = "Write your message here..."

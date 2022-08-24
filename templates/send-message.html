@@ -2,15 +2,16 @@
 {% block content %}
 <div class="card ">
         <div class="info-box">
-            <h3>Send a secret message to {{target.first_name}}</h3>
+            <h2>Send a secret message to {{target.first_name}}</h2>
         </div>
     <p>They will never know who messaged them</p>
     <form action="" method="post">
         {% csrf_token %}
-        {{form}}
+        {{form.message}}
+        <button class=" field bold" id="main-button" >
+            Send Secret Message
+        </button>
     </form>
-    <button class=" field bold" id="main-button" >
-        Send Secret Message
-    </button>
+   
 </div>
 {% endblock content %}

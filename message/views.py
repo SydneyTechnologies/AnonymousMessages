@@ -13,7 +13,7 @@ from .utils import generate_pass, generate_username
 
 def index(request):
     if request.user.is_authenticated:
-        return redirect("view-messages")
+        return redirect("view-messages", None)
     user_form = UserForm()
     login_form = LoginUserForm()
     context = {"create_form": user_form, "login_form": login_form}
@@ -47,7 +47,7 @@ def login_user(request):
                 return HttpResponse("not working")
 
 
-def view_messages(request, unsafe_pass):
+def view_messages(request, unsafe_pass=None):
     inbox_location = request.build_absolute_uri(reverse("create-message",  args=[request.user.username]))
     context = {"inbox": inbox_location, "unsafe": unsafe_pass}
     return render(request, "messages.html", context)
@@ -56,12 +56,22 @@ def view_messages(request, unsafe_pass):
 def create_message(request, username):
     target_user = User.objects.get(username = username)
     message_form = MessageForm()
-    context = {"target": target_user, "form": message_form}
+    if request.method == "GET":
+        context = {"target": target_user, "form": message_form}
+        if target_user is not None:
+            return render(request, "send-message.html", context)
+        else:
+            return HttpResponse("Target User not found")
+    else: 
+        message_form = MessageForm(request.POST)
+        if message_form.is_valid():
+            message_form.save(commit=False)
+            message_form.target = target_user
+            message_form.save()
+            return redirect("index")
+        else:
+            print(message_form.errors)
 
-    if target_user is not None:
-        return render(request, "send-message.html", context)
-    else:
-        return HttpResponse("Target User not found")
 
 
 def logout_view(request):
